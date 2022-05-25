@@ -1,8 +1,8 @@
-# activated read only 오류
+# thinpool metadata read only 오류
 
-## 오류 증상 확인
+### 오류 증상 확인
 
-thinpool이 (activated read only) 상태로 표시되며, write가 불가한 상태
+thinpool이 읽기만 가능하며, 쓰기 시도 시 오류가 발상하여 불가한 상태
 
 ```
 root@pve:~# lvs
@@ -16,32 +16,8 @@ root@pve:~# lvs
   vm-122-disk-0       pve    Vwi-aotz--  32.00g data                 100.00                                 
 ```
 
-thinpool의 attr 정보에 c (under construction), M (mirrored without initial sync) 값이 확인된다.
-
-```
-root@pve:~# lvdisplay
---- Logical volume ---
-  LV Name                raid_thinpool
-  VG Name                hdd_vg
-  LV UUID                0Vlh3d-E5ng-o7ik-niOj-SgEf-gYu4-XwrSwp
-  LV Write Access        read/write (activated read only)
-  LV Creation host, time pve, 2021-12-06 21:10:56 +0900
-  LV Pool metadata       raid_thinpool_tmeta
-  LV Pool data           raid_thinpool_tdata
-  LV Status              available
-  # open                 0
-  LV Size                21.00 TiB
-  Allocated pool data    50.00%
-  Allocated metadata     0.38%
-  Current LE             5505024
-  Segments               1
-  Allocation             inherit
-  Read ahead sectors     auto
-  - currently set to     32768
-  Block device           253:15
-```
-
-thinpool 의 상태가 read/write 가 가능하지만 (activated read only) 상태가 추가되어 있음.
+thinpool의 attr 정보에 c (thinpool check needed), M (metadata read only) 값이 확인된다. 
+즉 metadata data only로 인해 신규 블록 할당이 불가한 상태이다.
 
 ---
 ### lvs 의 결과에서 thinpool의 Meta% 사용도가 100%에 가깝다면 메타데이터 크기를 키워서 해결할 수 있다.
@@ -103,7 +79,26 @@ lvconvert --repair hdd_vg/raid_thinpool
 <superblock uuid="" time="0" transaction="1" flags="1" version="2" data_block_size="16384" nr_data_blocks="2621440">
 ```
 
-flags="1" 로 되어있다면 1을 0으로 수정 후에 저장한다. (오류 플래그 정보로 보임)
+flags="1" 로 되어있다면 1을 0으로 수정 후에 저장한다. 해당 플래그 값으로 인해 c (thinpool check needed) 로 인식되는 것으로 추정된다.
 
-그 후 lvcreate, thin_restore ~~ lvremove 까지 나머지 명령어를 수행해 준다.
+그 후 lvcreate, thin_restore ~~ lvremove 까지의 단계를 동일하게 수행해 준다.
 
+---
+### 정상으로 돌아온 경우
+
+```
+root@pve:~# lvs
+  LV                  VG     Attr       LSize   Pool          Origin Data%  Meta%
+  raid_thinpool       hdd_vg twi-aotz--  21.00t                      48.45  0.37                            
+  raid_thinpool_meta0 hdd_vg -wi-a----- 160.00m                                                             
+  raid_thinpool_meta1 hdd_vg -wi-a-----  15.00g                                                             
+  vm-121-disk-0       hdd_vg Vwi-aotz--  20.00t raid_thinpool        50.09                                  
+  data                pve    twi-aotz--   1.00t                      28.62  1.64                            
+  root                pve    -wi-ao----  96.00g                                                             
+  swap                pve    -wi-ao----   8.00g                                                             
+  vm-121-disk-0       pve    Vwi-aotz--  20.00g data                 43.96                                  
+  vm-122-disk-0       pve    Vwi-aotz--  32.00g data                 100.00                                 
+root@pve:~# 
+```
+
+thinpool의 attr 정보에 c (thinpool check needed), M (metadata read only) 값이 사라졌으며, a (active) 상태가 되어 정상적으로 쓰기가 가능해졌다.

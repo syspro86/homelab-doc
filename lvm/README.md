@@ -2,7 +2,7 @@
 
 ## 오류 해결
 
-- [Thin Pool activated read only 오류](activated-read-only.md)
+- [Thin Pool metadata read only 오류](metadata-read-only.md)
 
 
 # WD HDD
