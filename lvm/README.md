@@ -4,6 +4,9 @@
 
 - [Thin Pool metadata read only 오류](metadata-read-only.md)
 
+## RAID
+
+- [mdadm](mdadm.md)
 
 # WD HDD
 
