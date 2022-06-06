@@ -54,3 +54,16 @@ reset
   - Primary GPU: X
   - Rom-BAR: 체크
   - PCI-Express: 체크
+
+## 오류 해결
+
+### vfio-pci 0000:08:00.0: BAR 3: can't reserve [mem 0xf0000000-0xf1ffffff 64bit pref]
+
+장치를 제거한 후 다시 검색하여 추가한다.
+
+```
+echo 1 > /sys/bus/pci/devices/0000\:08\:00.0/remove
+echo 1 > /sys/bus/pci/rescan
+```
+
+필요 시 crontab에 @reboot 로 추가하여 실행.
