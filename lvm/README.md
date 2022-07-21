@@ -8,6 +8,8 @@
 
 - [mdadm](mdadm.md)
 
+- [disk 교체하기](mdadm-replace-disk.md)
+
 # WD HDD
 
 ## TLER
