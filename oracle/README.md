@@ -8,6 +8,10 @@ AND S.STATUS = 'ACTIVE'
 AND S.USERNAME <> 'ADMIN'
 ORDER BY S.SID,T.PIECE
 ```
+# table shrink
+```
+ALTER TABLE table_name SHRINK SPACE;
+```
 # tablespace shrink
 ```
 -- PURGE TABLESPACE tablespace명;
