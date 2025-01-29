@@ -25,3 +25,11 @@ TLER 활성화 확인
 ```
 smartctl -l scterc /dev/sda
 ```
+
+## thin pool
+
+thinpool 확장. thinpool metadata는 같이 확장되지 않는다.
+
+```
+lvextend -L+10G vg/thinpool
+```
