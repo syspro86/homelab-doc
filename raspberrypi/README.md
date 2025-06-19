@@ -21,15 +21,13 @@ ZSH_THEME="agnoster"
 
 ## realtek usb wifi driver
 ```
-sudo lsusb
-Bus 001 Device 004: ID 0bda:c811 Realtek Semiconductor Corp. 802.11ac NIC
+sudo apt update
+sudo apt install -y raspberrypi-kernel-headers build-essential bc dkms git
 
-sudo apt install build-essential -y
-mkdir -p ~/build
-cd ~/build
-sudo apt install git
-git clone https://github.com/brektrou/rtl8821CU.git
-cd rtl8821CU
-make
-sudo make install
+mkdir -p ~/src
+cd ~/src
+git clone https://github.com/morrownr/8821cu-20210916.git
+cd 8821cu-20210916
+
+sudo ./install-driver.sh
 ```
