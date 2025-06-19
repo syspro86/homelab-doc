@@ -37,5 +37,9 @@ sudo ./install-driver.sh
 sudo nmcli radio wifi on
 sudo nmcli dev wifi list
 sudo nmcli dev wifi connect "<SSID>" password "<비밀번호>"
-sudo nmcli device 
+sudo nmcli device
+
+sudo nmcli connection modify <CONNECTION_NAME> connection.autoconnect yes
+sudo nmcli device set <DEVICE_NAME> autoconnect yes
+sudo nmcli -f name,autoconnect connection
 ```
