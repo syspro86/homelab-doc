@@ -31,3 +31,11 @@ cd 8821cu-20210916
 
 sudo ./install-driver.sh
 ```
+
+## wifi 연결
+```
+sudo nmcli radio wifi on
+sudo nmcli dev wifi list
+sudo nmcli dev wifi connect "<SSID>" password "<비밀번호>"
+sudo nmcli device 
+```
