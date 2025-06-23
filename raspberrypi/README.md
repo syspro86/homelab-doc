@@ -3,7 +3,7 @@
 보유중인 rpi1 을 위한 스크립트 모음
 
 ## 초기 세팅
-오버클럭, wifi 연결 등
+오버클럭 등
 ```
 sudo raspi-config
 ```
@@ -42,4 +42,15 @@ sudo nmcli device
 sudo nmcli connection modify <CONNECTION_NAME> connection.autoconnect yes
 sudo nmcli device set <DEVICE_NAME> autoconnect yes
 sudo nmcli -f name,autoconnect connection
+
+# wifi powersave 방지
+# 방법1
+sudo nmcli connection modify <CONNECTION_NAME> 802-11-wireless.powersave 2
+# 방법2 
+#sudo echo "[connection]" > /etc/NetworkManager/conf.d/powersave.conf
+#sudo echo "wifi.powersave=off" >> /etc/NetworkManager/conf.d/powersave.conf
+#sudo chmod 600 /etc/NetworkManager/conf.d/powersave.conf
+# 방법3
+#sudo iw dev wlan0 set power_save off
+#sudo iw dev wlan0 get power_save
 ```
