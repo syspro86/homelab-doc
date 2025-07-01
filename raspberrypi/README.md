@@ -54,3 +54,24 @@ sudo nmcli connection modify <CONNECTION_NAME> 802-11-wireless.powersave 2
 #sudo iw dev wlan0 set power_save off
 #sudo iw dev wlan0 get power_save
 ```
+
+## 커널로그 보존
+```
+sudo vi /etc/systemd/journald.conf
+
+[Journal]
+Storage=persistent
+
+sudo systemctl restart systemd-journald
+or
+sudo reboot
+```
+
+## 지난 부팅 로그 확인 
+```
+journalctl --list-boots
+# 이번 부팅
+journalctl -b
+# 지난 부팅
+journalctl -b -1
+```
