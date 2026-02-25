@@ -1,10 +1,10 @@
-sleep 모드로 가는걸 막는 서비스 목록
+#### sleep 모드로 가는걸 막는 서비스 목록
 
 ```
 systemd-inhibit --list --mode=block
 ```
 
-vram 할당 용량 확인
+#### vram 할당 용량 확인
 
 ```
 glxinfo | grep -E -i "device|memory"
@@ -14,3 +14,8 @@ glxinfo | grep -E -i "device|memory"
 Memory info (GL_NVX_gpu_memory_info):
     Dedicated video memory: 512 MB
 ```
+
+#### 앱을 다크 모드로
+
+- 다크모드 `gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'`
+- 기본값 `gsettings set org.gnome.desktop.interface color-scheme 'default'`
